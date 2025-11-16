@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { Idea } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
+import { useAppKit } from '@reown/appkit';
 
 const initialIdeas: Idea[] = [
   {
@@ -40,6 +41,8 @@ const BADGE_THRESHOLDS = {
 export const useIdeaPool = () => {
   const [ideas, setIdeas] = useState<Idea[]>(initialIdeas);
   const { toast } = useToast();
+  const { address } = useAppKit();
+
 
   const sortedIdeas = useMemo(() => {
     return [...ideas].sort((a, b) => b.weight - a.weight);
@@ -64,7 +67,7 @@ export const useIdeaPool = () => {
     const newIdea: Idea = {
       id: Date.now(),
       text,
-      author: "0xYour...Addr", // Placeholder for connected wallet
+      author: address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "0x...",
       weight: 0,
       timestamp: Date.now(),
       badgeLevel: 0,
@@ -74,7 +77,7 @@ export const useIdeaPool = () => {
         title: "Success!",
         description: "Your idea has been submitted to the pool.",
       });
-  }, [toast]);
+  }, [toast, address]);
 
   const stakeAttention = useCallback((ideaId: number, amount: number) => {
     setIdeas((prev) =>
