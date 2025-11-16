@@ -3,7 +3,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { Idea } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
-import { useAppKit } from '@reown/appkit';
 
 const initialIdeas: Idea[] = [
   {
@@ -41,7 +40,8 @@ const BADGE_THRESHOLDS = {
 export const useIdeaPool = () => {
   const [ideas, setIdeas] = useState<Idea[]>(initialIdeas);
   const { toast } = useToast();
-  const { address } = useAppKit();
+  // A placeholder for the connected user's address
+  const address = "0xUser...1234"
 
 
   const sortedIdeas = useMemo(() => {
